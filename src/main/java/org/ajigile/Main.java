@@ -1,8 +1,11 @@
 package org.ajigile;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -94,6 +97,13 @@ public class Main {
         System.out.println("\n");
         System.out.println(String.format("Number of transactions = %d", stats.getCount()));
         System.out.println(String.format("Average Transaction Value = %s", new DecimalFormat("#0.00").format(stats.getAverage())));
+
+
+
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter("output.csv"));) {
+            bw.write("num_of_trx, average"); bw.newLine();
+            bw.write(String.format("%d, %s", stats.getCount(), new DecimalFormat("#0.00").format(stats.getAverage())));
+        }
 
     }
 }
