@@ -46,6 +46,12 @@ Open command line tool, go to working directory, and execute following command:
 ```bash
 java -jar target/test-hoolah.jar
 ```
+Above will generate error message and guide how to provide required arguments.
+
+Example correct command:
+```bash
+java -jar target/test-hoolah.jar "20/08/2018 12:00:00" "20/08/2018 13:00:00" "Kwik-E-Mart"
+```
 The output in console and file (according to `application.properties`) will be generated.
 
 
