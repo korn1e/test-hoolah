@@ -83,7 +83,7 @@ public class Main {
 
         //dataMap.keySet().forEach(k->System.out.println(dataMap.get(k).toString()));
 
-        // remove transction that part of REVERSAL transaction
+        // remove transaction that part of REVERSAL transaction
         List<String> excludeTrxIds = dataMap.keySet().stream().filter(k->reversalTransactionMap.containsValue(k)).collect(Collectors.toList());
         excludeTrxIds.forEach(k->dataMap.remove(k));
 
@@ -94,13 +94,12 @@ public class Main {
                         .summaryStatistics();
 
         // print out report
-        System.out.println("\n");
+        System.out.println("");
         System.out.println(String.format("Number of transactions = %d", stats.getCount()));
         System.out.println(String.format("Average Transaction Value = %s", new DecimalFormat("#0.00").format(stats.getAverage())));
 
-
-
-        try(BufferedWriter bw = new BufferedWriter(new FileWriter("output.csv"));) {
+        // output to file in csv format (tabular)
+        try(BufferedWriter bw = new BufferedWriter(new FileWriter(config.getProperty(Constants.OUTPUT_FILE_PATH, "output.csv")));) {
             bw.write("num_of_trx, average"); bw.newLine();
             bw.write(String.format("%d, %s", stats.getCount(), new DecimalFormat("#0.00").format(stats.getAverage())));
         }

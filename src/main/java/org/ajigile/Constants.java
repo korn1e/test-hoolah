@@ -4,6 +4,7 @@ public class Constants {
 
     public static final String APPLICATION_PROPERTIES = "application.properties";
     public static final String DATA_FILE_PATH = "data.file.path";
+    public static final String OUTPUT_FILE_PATH = "output.file.path";
 
 
     public static final String DATE_PATTERN = "dd/MM/yyyy HH:mm:ss";

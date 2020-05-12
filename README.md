@@ -31,7 +31,8 @@ and put it in the working directory or same location as the .jar file.
 
 Following parameter is needed:
 ```bash
-data.file.path=/absolute/path/to/data.csv
+data.file.path=/path/to/data.csv
+output.file.path=/path/to/output.csv
 ```
 ----
 #### Data File: 
@@ -45,6 +46,7 @@ Open command line tool, go to working directory, and execute following command:
 ```bash
 java -jar target/test-hoolah.jar
 ```
+The output in console and file (according to `application.properties`) will be generated.
 
 
 
