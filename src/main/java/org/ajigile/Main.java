@@ -1,15 +1,13 @@
 package org.ajigile;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -17,8 +15,6 @@ import java.util.stream.Collectors;
 public class Main {
 
     private static final Pattern commaPtrn = Pattern.compile("\\s*,\\s*");
-
-
 
     public static void main(String[] args) throws Exception{
 
@@ -65,12 +61,14 @@ public class Main {
                 return true;
             }
 
+            // invalid date format will be ignored
             return false;
         };
 
+        AtomicInteger rowIdx = new AtomicInteger(0);
         Files.lines(dataPath)
                 .map(l-> Arrays.asList(commaPtrn.split(l)))
-                .filter(d->!d.get(Constants.ID).equalsIgnoreCase("ID")) // filter header
+                .filter(d->rowIdx.getAndAdd(1)>0) // filter header
                 .filter(d->d.get(Constants.MERCHANT).equals(merchant))
                 .peek(d->{
                     if(d.get(Constants.TYPE).equalsIgnoreCase("REVERSAL")){
@@ -92,6 +90,7 @@ public class Main {
                         .mapToDouble(d->Double.parseDouble(d.get(Constants.AMOUNT)))
                         .summaryStatistics();
 
+        // print out report
         System.out.println("\n");
         System.out.println(String.format("Number of transactions = %d", stats.getCount()));
         System.out.println(String.format("Average Transaction Value = %s", new DecimalFormat("#0.00").format(stats.getAverage())));
