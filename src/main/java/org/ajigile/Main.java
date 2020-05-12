@@ -84,10 +84,6 @@ public class Main {
 
         //dataMap.keySet().forEach(k->System.out.println(dataMap.get(k).toString()));
 
-        // remove transaction that part of REVERSAL transaction
-        List<String> excludeTrxIds = dataMap.keySet().stream().filter(k->reversalTransactionMap.containsValue(k)).collect(Collectors.toList());
-        excludeTrxIds.forEach(k->dataMap.remove(k));
-
         DoubleSummaryStatistics stats =
                 dataMap.values().stream()
                         .filter(d->!reversalTransactionMap.containsValue(d.get(Constants.ID)))
