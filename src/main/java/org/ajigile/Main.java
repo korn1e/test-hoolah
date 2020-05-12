@@ -51,7 +51,7 @@ public class Main {
         }
         final SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_PATTERN);
 
-        Predicate<List<String>> logicFilter = data -> {
+        Predicate<List<String>> dateRangeFilter = data -> {
             Date dataDate = null;
             try {
                 dataDate = sdf.parse(data.get(Constants.DATE));
@@ -74,11 +74,12 @@ public class Main {
                 .filter(d->rowIdx.getAndAdd(1)>0) // filter header
                 .filter(d->d.get(Constants.MERCHANT).equals(merchant))
                 .peek(d->{
-                    if(d.get(Constants.TYPE).equalsIgnoreCase("REVERSAL")){
+                    if(d.get(Constants.TYPE).equalsIgnoreCase(Constants.REVERSAL)){
                         reversalTransactionMap.put(d.get(Constants.ID), d.get(Constants.RELATED_TRX));
                     }
                 })
-                .filter(logicFilter)
+                .filter(d->d.get(Constants.TYPE).equals(Constants.PAYMENT))
+                .filter(dateRangeFilter)
                 .forEach(d->dataMap.put(d.get(Constants.ID), d));
 
         //dataMap.keySet().forEach(k->System.out.println(dataMap.get(k).toString()));
@@ -90,6 +91,7 @@ public class Main {
         DoubleSummaryStatistics stats =
                 dataMap.values().stream()
                         .filter(d->!reversalTransactionMap.containsValue(d.get(Constants.ID)))
+                        //.peek(d->System.out.println(d))
                         .mapToDouble(d->Double.parseDouble(d.get(Constants.AMOUNT)))
                         .summaryStatistics();
 
@@ -105,4 +107,5 @@ public class Main {
         }
 
     }
+
 }
