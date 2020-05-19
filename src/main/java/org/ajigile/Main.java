@@ -46,7 +46,7 @@ public class Main {
 
         Path dataPath = Paths.get(config.getProperty(Constants.DATA_FILE_PATH));
         if(Files.notExists(dataPath)) {
-            System.out.println("Data file is not available.");
+            System.out.println("Data file is not available at configured path: " + dataPath.toString());
             System.exit(1);
         }
         final SimpleDateFormat sdf = new SimpleDateFormat(Constants.DATE_PATTERN);
